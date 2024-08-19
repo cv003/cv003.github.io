@@ -30,14 +30,20 @@
 
         let angleX = 0;
         let angleY = 0;
-
+        
         function lerp(a, b, t) {
             return a + (b - a) * t;
         }
 
-        function animate() {
-            angleX = lerp(angleX, easingAngleX, 0.01);
-            angleY = lerp(angleY, easingAngleY, 0.01);
+        let start = 1;
+        function animate(timeStamp) {
+            
+            const elapsed = timeStamp - start;
+            start = timeStamp;
+
+            let ease = Math.min(0.0025 * elapsed, 1)
+            angleX = lerp(angleX, easingAngleX, ease);
+            angleY = lerp(angleY, easingAngleY, ease);
 
             frontSphereContainer.style.zIndex = fov / zSimplicity;
 
@@ -91,7 +97,7 @@
             requestAnimationFrame(animate);
         }
 
-        animate();
+        requestAnimationFrame(animate);
 
         document.addEventListener('mousemove', (event) => {
             const centerX = window.innerWidth / 2;
