@@ -8,21 +8,17 @@
 
         const zSimplicity = 25;
 
-        for (let i = 0; i < numImages*2; i++) {
+        for (let i = 0; i < numImages; i++) {
             const img = document.createElement('img');
             img.src = `silly.png`;
             img.className = 'image';
 
-            if (i < numImages) {
-                sphereContainer.appendChild(img);
-                images.push(img);
-            }
-            else
-            {
-                frontSphereContainer.appendChild(img);
-                frontImages.push(img);
-            }
-            
+            sphereContainer.appendChild(img);
+            images.push(img);
+
+            const frontImg = img.cloneNode(false);
+            frontSphereContainer.appendChild(frontImg);
+            frontImages.push(frontImg);
         }
 
         let easingAngleX = 0;
@@ -30,18 +26,19 @@
 
         let angleX = 0;
         let angleY = 0;
-        
+
         function lerp(a, b, t) {
             return a + (b - a) * t;
         }
 
         let start = 1;
+        
         function animate(timeStamp) {
             
             const elapsed = timeStamp - start;
             start = timeStamp;
 
-            let ease = Math.min(0.0025 * elapsed, 1)
+            const ease = Math.min(0.0025 * elapsed, 1)
             angleX = lerp(angleX, easingAngleX, ease);
             angleY = lerp(angleY, easingAngleY, ease);
 
@@ -58,37 +55,59 @@
                     front = true
                 }
                 const phi = Math.acos(1 - 2 * (i + 0.5) / numImages);
-                const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5);
+                const theta = Math.PI * (1 + 2.2360679775) * (i + 0.5);
 
-                const x = radius * Math.cos(theta) * Math.sin(phi);
-                const y = radius * Math.sin(theta) * Math.sin(phi);
-                const z = radius * Math.cos(phi);
+                const thetaCos = Math.cos(theta);
+                const thetaSin = Math.sin(theta)
 
-                const rotatedX = x * Math.cos(angleY) - z * Math.sin(angleY);
-                const rotatedZ = z * Math.cos(angleY) + x * Math.sin(angleY);
+                const phiCos = Math.cos(phi);
+                const phiSin = Math.sin(phi);
+
+                const angleYCos = Math.cos(angleY);
+                const angleYSin = Math.sin(angleY);
+
+                const angleXCos = Math.cos(angleX);
+                const angleXSin = Math.sin(angleX);
+
+                const x = radius * thetaCos * phiSin;
+                const y = radius * thetaSin * phiSin;
+                const z = radius * phiCos;
+
+                const rotatedX = x * angleYCos - z * angleYSin;
+                const rotatedZ = z * angleYCos + x * angleYSin;
 
                 const finalX = rotatedX;
-                const finalY = y * Math.cos(angleX) - rotatedZ * Math.sin(angleX);
-                const finalZ = rotatedZ * Math.cos(angleX) + y * Math.sin(angleX);
+                const finalY = y * angleXCos - rotatedZ * angleXSin;
+                const finalZ = rotatedZ * angleXCos + y * angleXSin;
                 
+                let display = true
                 if (finalZ < (-fov)+3) {
-                    img.style.display = 'none';
-                } else {
-                    img.style.display = 'block';
+                    display = false
                 }
 
                 let scale = fov / (fov + finalZ);
-                scale /= 5;
+                scale *= 0.2;
 
-                img.style.transform = `translate(${finalX * scale}vw, ${finalY * scale}vh) scale(${scale*100}%)`;
-
-                let sort = front ? -finalZ : (-finalZ) - fov;
-                img.style.zIndex = Math.round(sort / zSimplicity);
-
-                let opacity = (finalZ/(fov/2))+1;
+                let opacity = (finalZ/ (fov * 0.5))+1;
                 if (front) {
-                    opacity = -finalZ/(fov/2);
+                    opacity = -finalZ / (fov * 0.5);
                     opacity += 0.5;
+                }
+
+                if (opacity <= 0) {
+                    display = false
+                }
+
+                if (display) {
+                    img.style.display = 'block';
+                    img.style.transform = `translate(${finalX * scale}vw, ${finalY * scale}vh) scale(${scale*100}%)`;
+
+                    let sort = front ? -finalZ : (-finalZ) - fov;
+                    img.style.zIndex = Math.round(sort / zSimplicity);
+                }
+                else
+                {
+                    img.style.display = 'none';
                 }
 
                 img.style.opacity = Math.min(Math.max(opacity, 0), 1);
