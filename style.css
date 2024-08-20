@@ -2,7 +2,8 @@ body {
     margin: 0;
     overflow: hidden;
     background-image: url("bg.png");
-    background-size: cover;
+    background-position: center bottom;
+    background-size: 100% auto;
     -webkit-user-select: none; 
     -ms-user-select: none;
     user-select: none;
