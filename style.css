@@ -21,7 +21,7 @@ body {
     height: 0px;
 }
 
-div {
+#centerTextDiv {
     display: flex;
     vertical-align: middle;
     height: 100vh;
@@ -30,11 +30,11 @@ div {
     align-items: center;
     text-align: center;
     justify-content: center;
+    pointer-events: none;
 }
 
 header {
     display: block;
-    vertical-align: middle;
     color: #ffffff;
     font-size: 10vw;
     font-family: 'RujisHandwritingFontv20Medium';
@@ -54,11 +54,21 @@ a {
 .image {
     position: absolute;
     transform-origin: center center;
-    width:60vh;
-    border-radius: 100%;
+    width:80vh;
+    transition: width .5s cubic-bezier(0.25, 1, 0.5, 1);
+    border-radius: 10%;
+}
+
+.hoveredImage {
+    width: 150vh;
+}
+
+#sphere {
+    filter:drop-shadow(0 0.75vh 1vh rgb(3, 3, 3));
 }
 
 #frontSphere {
-    filter: blur(20px);
+    filter: brightness(0.8) drop-shadow(0 0 15vh black) blur(3vh);
+    pointer-events : none;
     z-index: 2;
 }
