@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'Ruji';
+    src: local('Ruji'), url('ruji.woff') format('woff');
+}
+
+
 body {
     margin: 0;
     overflow: hidden;
@@ -37,14 +43,14 @@ header {
     display: block;
     color: #ffffff;
     font-size: 10vw;
-    font-family: 'RujisHandwritingFontv20Medium';
+    font-family: 'Ruji', sans-serif;
     filter: drop-shadow(0 2vh 3vh #aaaaaa);
 }
 
 a {
     color: #8d8887;
     font-size: 1vw;
-    font-family: 'RujisHandwritingFontv20Medium';
+    font-family: 'Ruji', sans-serif;
     filter: drop-shadow(0 2vh 3vh #a7a7a7);
     bottom: -10px;
     position: absolute;
