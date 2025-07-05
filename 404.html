@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>...</title>
+    <link rel="icon" type="image/png" href="404.png">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="googlebot" content="index,follow">
+    <meta name="google" content="notranslate">
+
+    <style>
+        body {
+            background-color: black;
+            overflow: hidden;
+            padding: 0; margin: 0;
+        }
+        .page {
+            width: 100vw; height: 100vh;
+            display: flex; position: fixed; opacity: 0;
+            justify-content: center; align-items: center;
+        }
+
+        .waiting {
+            position: fixed; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+            width: 100%; height: 100vh;
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            backdrop-filter: blur(10px);
+            opacity: 1; z-index: 2000;
+            cursor: pointer;
+            font-family: "Segoe UI", "Open Sans", "Helvetica Neue", sans-serif;
+        }
+        .atext {
+            color: #d7d7d7;
+            font-size: 12.5px;
+            user-select: none;
+            z-index: 2500;
+        }
+        
+    </style>
+
+</head>
+<body>
+
+    <div class="waiting">
+        <img class="paw" width="50px" draggable="false" src="../assets/images/paw.png">
+        <a class="atext">click to play</a>
+    </div>
+
+    <div class="page">
+        <video class="NOTHING" width="400" height="400">
+            <source src="../assets/videos/THERESNOTHING.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <script>
+        document.querySelector(".waiting").addEventListener("click", () => {
+            document.querySelector(".waiting").style.display = "none";
+            document.querySelector(".page").style.opacity = "1";
+            document.querySelector("*").style.cursor = "none";
+            document.title = "NOTHING"
+            document.querySelector(".NOTHING").play();
+            document.querySelector(".NOTHING").addEventListener("ended", () => {
+                function exitpage() {
+                    try {window.close()} catch (e) {}
+                    try {window.open("", "_self", ""); window.close()} catch (e) {}
+                    try {history.back()} catch (e) {}
+                    try {history.go(-1)} catch (e) {}
+                    if (window.parent !== window) {
+                        try {window.parent.postMessage("close", "*")} catch (e) {}
+                    }
+                    try {window.open("about:blank", "_self")} catch (e) {}
+                    try {window.location.href = "about:blank"} catch (e) {}
+                    try {window.location.replace("about:blank")} catch (e) {}
+                }
+                exitpage();
+            });
+        });
+    </script>
+
+</body>
+</html>

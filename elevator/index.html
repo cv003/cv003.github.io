@@ -144,6 +144,10 @@
             volume.gain.value = 0.5;
             volume.connect(context.destination);
 
+            let analyser = context.createAnalyser();
+            volume.connect(analyser);
+            analyser.connect(context.destination);
+
             var buffer = null; var song = null;
             var request = new XMLHttpRequest();
 
